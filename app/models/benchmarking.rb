@@ -6,4 +6,5 @@ class Benchmarking
   field :pais_2, type: String
   field :data_inicio, type: Date
   field :data_fim, type: Date
+  has_many :resultados, class_name: "Resultado", inverse_of: :benchmarking
 end
