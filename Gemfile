@@ -1,5 +1,8 @@
 source "https://rubygems.org"
 
+# MongoId
+gem "mongoid"
+
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
 gem "rails", "~> 7.2.2", ">= 7.2.2.1"
 # Use sqlite3 as the database for Active Record
