@@ -28,6 +28,48 @@ class ResultadosController < ApplicationController
     end
   end
 
+  def comparativo
+  estado_1 = params[:estado_1].upcase
+  estado_2 = params[:estado_2].upcase
+
+  begin
+    data_inicio = Date.parse(params[:data_inicio])
+    data_fim = Date.parse(params[:data_fim])
+  rescue ArgumentError
+    return render json: { error: "Datas inválidas" }, status: :bad_request
+  end
+
+  benchmarking = Benchmarking.find_by(
+    estado_1: estado_1,
+    estado_2: estado_2,
+    data_inicio: data_inicio,
+    data_fim: data_fim
+  )
+
+  unless benchmarking
+    return render json: { error: "Benchmarking não encontrado com esses parâmetros" }, status: :not_found
+  end
+
+  resultado = Resultado.find_by(benchmarking_id: benchmarking.id)
+
+  unless resultado
+    return render json: { error: "Resultado não encontrado para esse benchmarking" }, status: :not_found
+  end
+
+  puts benchmarking.estado_1
+  puts benchmarking.estado_2
+  puts "RESULTADOS: #{resultado.dados}"
+
+  dados_tratados = tratar_dados(resultado.dados)
+
+  render json: {
+    benchmarking: benchmarking.nome,
+    periodo: resultado.periodo,
+    comparativo: dados_tratados
+  }
+  end
+
+
   # POST /resultados
   def create
     @resultado = Resultado.new(resultado_params)
@@ -51,6 +93,37 @@ class ResultadosController < ApplicationController
   # DELETE /resultados/1
   def destroy
     @resultado.destroy!
+  end
+
+  private
+
+  def tratar_dados(dados)
+    sigla_1, sigla_2 = dados.keys
+
+    estado_1 = dados[sigla_1]
+    estado_2 = dados[sigla_2]
+
+    {
+      sigla_1 => {
+        casos: estado_1["casos_confirmados"],
+        mortes: estado_2["mortes"],
+        letalidade: "#{calc_letalidade(estado_1)}%"
+      },
+      sigla_2 => {
+        casos: estado_2["casos_confirmados"],
+        mortes: estado_2["mortes"],
+        letalidade: "#{calc_letalidade(estado_2)}%"
+      },
+      diferencas: {
+        casos: estado_1["casos_confirmados"] - estado_2["casos_confirmados"],
+        mortes: estado_1["mortes"] - estado_2["mortes"]
+      }
+    }
+  end
+
+  def calc_letalidade(estado)
+    return 0 if estado["casos_confirmados"].zero?
+    ((estado["mortes"].to_f / estado["casos_confirmados"]) * 100).round(2)
   end
 
   private
