@@ -18,6 +18,7 @@ class BenchmarkingsController < ApplicationController
     @benchmarking = Benchmarking.new(benchmarking_params)
 
     if @benchmarking.save
+      CovidDataFetchService.fetch_and_save(@benchmarking)
       render json: @benchmarking, status: :created, location: @benchmarking
     else
       render json: @benchmarking.errors, status: :unprocessable_entity
@@ -46,6 +47,6 @@ class BenchmarkingsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def benchmarking_params
-      params.require(:benchmarking).permit(:nome, :pais_1, :pais_2, :data_inicio, :data_fim)
+      params.require(:benchmarking).permit(:nome, :estado_1, :estado_2, :data_inicio, :data_fim)
     end
 end

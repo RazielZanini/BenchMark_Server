@@ -46,6 +46,6 @@ class ResultadosController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def resultado_params
-      params.require(:resultado).permit(:benchmark_id, :data, :pais, :casos_confirmados, :mortes, :populacao)
+      params.require(:resultado).permit(:benchmark_id, :periodo, :dados)
     end
 end
