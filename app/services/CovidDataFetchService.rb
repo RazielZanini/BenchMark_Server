@@ -3,7 +3,7 @@ require "json"
 require "date"
 
 class CovidDataFetchService
-  API_URL = "https://brasil.io/api/v1/dataset/covid19/caso/data/"
+  API_URL = ENV["API_URL"]
 
   def self.fetch_and_save(benchmarking)
     periodo_str = "#{benchmarking.data_inicio} a #{benchmarking.data_fim}"
