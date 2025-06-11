@@ -15,12 +15,16 @@ class ResultadosController < ApplicationController
 
   # GET /resultados/by_benchmark/1
   def show_by_benchmark
+    begin
     @resultado = Resultado.find_by(benchmarking_id: params[:benchmarking_id])
 
     if @resultado
       render json: @resultado
     else
       render json: { error: "Resultado não encontrado para esse benchmarking" }, status: :not_found
+    end
+    rescue => e
+    render json: { error: "Erro ao buscar resultado: #{e.message}" }, status: :internal_server_error
     end
   end
 
