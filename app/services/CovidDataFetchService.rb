@@ -6,6 +6,10 @@ class CovidDataFetchService
   API_URL = "https://brasil.io/api/v1/dataset/covid19/caso/data/"
 
   def self.fetch_and_save(benchmarking)
+    periodo_str = "#{benchmarking.data_inicio} a #{benchmarking.data_fim}"
+
+    return if benchmarking.resultados.where(periodo: periodo_str).exists?
+    # Iniciando os parametros para as requisições
     estados = [ benchmarking.estado_1, benchmarking.estado_2 ]
     headers = { "Authorization" => ENV["API_KEY"] }
     dados_gerais = {}
@@ -22,6 +26,7 @@ class CovidDataFetchService
           http.request(req)
         end
 
+        # Interrompe o loop caso a resposta seja diferente de 200
         break unless response.is_a?(Net::HTTPSuccess)
 
         body = JSON.parse(response.body)
