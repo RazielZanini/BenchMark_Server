@@ -15,6 +15,21 @@ class BenchmarkingsController < ApplicationController
 
   # POST /benchmarkings
   def create
+    benchmarking_params = benchmarking_params()
+
+    # Checa se já existe um tetse benchmark com estes mesmos dados antes de prosseguir
+    benchmarking_existente = Benchmarking.find_by(
+      estado_1: benchmarking_params[:estado_1],
+      estado_2: benchmarking_params[:estado_2],
+      data_inicio: benchmarking_params[:data_inicio],
+      data_fim: benchmarking_params[:data_fim]
+    )
+
+    if benchmarking_existente&.resultados&.where(periodo: "#{benchmarking_params[:data_inicio]} a #{benchmarking_params[:data_fim]}")&.exists?
+      render json: { message: "Já existe um benchmarking com esses dados", benchmarking: benchmarking_existente }, status: :ok
+      return
+    end
+
     @benchmarking = Benchmarking.new(benchmarking_params)
 
     if @benchmarking.save
