@@ -56,10 +56,6 @@ class ResultadosController < ApplicationController
     return render json: { error: "Resultado não encontrado para esse benchmarking" }, status: :not_found
   end
 
-  puts benchmarking.estado_1
-  puts benchmarking.estado_2
-  puts "RESULTADOS: #{resultado.dados}"
-
   dados_tratados = tratar_dados(resultado.dados)
 
   render json: {
