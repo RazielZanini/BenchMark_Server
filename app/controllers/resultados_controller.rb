@@ -28,6 +28,7 @@ class ResultadosController < ApplicationController
     end
   end
 
+  # GET /resultados/:estado_1/:estado_2/:data_inicio/:data_fim
   def comparativo
   estado_1 = params[:estado_1].upcase
   estado_2 = params[:estado_2].upcase
