@@ -59,9 +59,18 @@ class CovidDataFetchService
         "populacao" => populacao
       }
     end
+    dados_formatados = dados_gerais.map do |sigla, valores|
+      {
+        "estado" => sigla,
+        "casos_confirmados" => valores["casos_confirmados"],
+        "mortes" => valores["mortes"],
+        "populacao" => valores["populacao"]
+      }
+    end
+
     benchmarking.resultados.create!(
         periodo: "#{benchmarking.data_inicio} a #{benchmarking.data_fim}",
-        dados: dados_gerais
+        dados: dados_formatados
       )
   end
 end
