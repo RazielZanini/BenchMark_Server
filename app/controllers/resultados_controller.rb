@@ -94,18 +94,16 @@ class ResultadosController < ApplicationController
   private
 
   def tratar_dados(dados)
-    sigla_1, sigla_2 = dados.keys
-
-    estado_1 = dados[sigla_1]
-    estado_2 = dados[sigla_2]
+    estado_1 = dados[0]
+    estado_2 = dados[1]
 
     {
-      sigla_1 => {
+      estado_1["estado"] => {
         casos: estado_1["casos_confirmados"],
         mortes: estado_2["mortes"],
         letalidade: "#{calc_letalidade(estado_1)}%"
       },
-      sigla_2 => {
+      estado_2["estado"] => {
         casos: estado_2["casos_confirmados"],
         mortes: estado_2["mortes"],
         letalidade: "#{calc_letalidade(estado_2)}%"
