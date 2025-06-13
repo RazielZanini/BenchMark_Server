@@ -49,7 +49,7 @@ Utilizamos um banco de dados **não relacional** (MongoDB) com duas coleções p
 
 ## 📊 Power BI
 
-A aplicação oferece uma rota dedicada para consulta via Power BI.  
+A aplicação oferece uma rota dedicada para consulta via Power BI.  `/resultados/:estado_1/:estado_2/:data_inicio/:data_fim`
 Os dados são organizados e tratados por uma função auxiliar `tratar_dados`, que calcula inclusive a taxa de letalidade.
 
 ---
