@@ -1,0 +1,62 @@
+services:
+  app:
+    build:
+      context: /home/raziel/Documents/benchmark_planisa
+      dockerfile: Dockerfile
+    command:
+      - bash
+      - -c
+      - bundle install && bundle exec rails db:migrate && bundle exec rails server -b 0.0.0.0
+    container_name: benchmark_api
+    depends_on:
+      - mongodb
+    environment:
+      API_KEY: Token 2fba196aa5c27bc1b0bda2e13f5b2540cf73f848
+      API_URL: https://brasil.io/api/v1/dataset/covid19/caso/data/
+      MONGO_URL: mongodb://mongodb:27017/benchmarks_db
+      RAILS_ENV: development
+    env_file:
+      - .env
+    networks:
+      default: null
+    ports:
+      - mode: ingress
+        target: 3000
+        published: "3000"
+        protocol: tcp
+    volumes:
+      - type: bind
+        source: /home/raziel/Documents/benchmark_planisa
+        target: /app
+        bind:
+          create_host_path: true
+      - type: volume
+        source: bundle
+        target: /usr/local/bundle
+        volume: {}
+
+  mongodb:
+    container_name: benchmark_mongo
+    image: mongo
+    networks:
+      default: null
+    ports:
+      - mode: ingress
+        target: 27017
+        published: "27017"
+        protocol: tcp
+    volumes:
+      - type: volume
+        source: mongo_data
+        target: /data/db
+        volume: {}
+
+networks:
+  default:
+    name: benchmark_planisa_default
+
+volumes:
+  bundle:
+    name: benchmark_planisa_bundle
+  mongo_data:
+    name: benchmark_planisa_mongo_data
