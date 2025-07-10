@@ -8,7 +8,7 @@ Ela é construída com **Ruby on Rails** e utiliza **MongoDB** como banco de dad
 
 ## 🔗 Frontend
 O frontend da aplicação pode ser acessado aqui:  
-➡️ [Benchmark_Planisa_Client (Next.js)](https://github.com/RazielZanini/Benchmark_Planisa_Client)
+➡️ [Benchmark_Client (Next.js)](https://github.com/RazielZanini/Benchmark_Client)
 
 ---
 
