@@ -68,5 +68,5 @@ Os dados são organizados e tratados por uma função auxiliar `tratar_dados`, q
 ### 1. Clonando o projeto
 
 ```bash
-git clone https://github.com/RazielZanini/BenchMark_Planisa_Server.git
-cd BenchMark_Planisa_Server
+git clone https://github.com/RazielZanini/BenchMark_Server.git
+cd BenchMark_Server
